@@ -1,0 +1,113 @@
+<p>This application predicts whether a movie will be successful based on budget,
+runtime, and audience engagement metrics using a machine learning model.</p>
+
+
+<!DOCTYPE html>
+
+<label>Genres</label><br>
+<input type="checkbox" name="genres" value="Action"> Action<br>
+<input type="checkbox" name="genres" value="Comedy"> Comedy<br>
+<input type="checkbox" name="genres" value="Drama"> Drama<br>
+<input type="checkbox" name="genres" value="Thriller"> Thriller<br>
+<input type="checkbox" name="genres" value="Romance"> Romance<br><br>
+
+<html>
+<head>
+    <title>Movie Success Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+        }
+        .container {
+            width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .note {
+            font-size: 13px;
+            color: gray;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Movie Success Prediction</h2>
+
+        <p>
+            Predict whether a movie will be successful based on budget,
+            runtime, and audience engagement metrics.
+        </p>
+
+        <form action="/predict" method="post">
+            <label>Budget</label>
+            <input type="number" name="budget" step="any" required>
+
+            <label>Runtime (minutes)</label>
+            <input type="number" name="runtime" step="any" required>
+
+            <label>Average Rating</label>
+            <input type="number" name="vote_average" step="any" required>
+
+            <label>Vote Count</label>
+            <input type="number" name="vote_count" step="any" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+
+        <div class="result">
+            <p>{{ prediction_text }}</p>
+            <p>{{ confidence_text }}</p>
+            <h4>Top Influencing Factors</h4>
+            <ul>
+                {% for feature, value in importance %}
+                <li>{{ feature }}: {{ "%.2f"|format(value*100) }}%</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="note">
+            Machine Learning model trained on TMDB movie metadata
+        </div>
+    </div>
+</body>
+</html>
+
+
+
